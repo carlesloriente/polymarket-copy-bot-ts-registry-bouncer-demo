@@ -6,13 +6,21 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# REQUIRED: Give Registry Bouncer permission to commit the report
+permissions:
+  contents: write
+
 jobs:
   scan-lockfile:
-    name: Scan Lockfile Registries
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          # REQUIRED: Forces Git to checkout the actual branch to avoid Detached HEAD errors
+          ref: ${{ github.head_ref || github.ref }} 
 
       - name: Run Registry Bouncer
-        uses: carlesloriente/registry-bouncer@v1.0.1
+        uses: carlesloriente/registry-bouncer@v1.1.0
+        with:
+          create_pages_report: 'true'
