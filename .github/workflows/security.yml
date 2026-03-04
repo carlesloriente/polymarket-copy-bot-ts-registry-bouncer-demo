@@ -1,0 +1,18 @@
+name: Security Checks
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  scan-lockfile:
+    name: Scan Lockfile Registries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Registry Bouncer
+        uses: carlesloriente/registry-bouncer@v1.0.0
